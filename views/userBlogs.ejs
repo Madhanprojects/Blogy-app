@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs') %>
+    <title>Blogy</title>
+</head>
+<body>
+
+    <%- include('partials/nav.ejs') %>
+
+    <div class="container mt-5">
+
+        <div class="row gx-4 gy-5">
+            <% if (!userBlogs || userBlogs.length === 0) { %>
+
+                <div class="d-flex justify-content-center align-items-center vh-100">
+                    <strong class="fs-3 text-secondary">
+                        No Blogs Posted
+                    </strong>
+                </div>
+
+            <% } %>
+                
+            
+
+            <% userBlogs.forEach(blog => { %>
+
+                <div class="col-md-4">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <img
+                            src="<%= blog.coverImage %>"
+                            class="card-img-top"
+                            style="height:220px; object-fit:cover;"
+                            alt=""
+                        >
+
+                        <div class="card-body d-flex flex-column">
+
+                            <h5 class="card-title">
+                                <%= blog.title %>
+                            </h5>
+
+                            <p class="card-text">
+                                <%= blog.body.substring(0,120) %>...
+                            </p>
+
+                            <div class="mt-auto d-flex gap-2">
+
+                                <a
+                                    href="/blog/<%= blog._id %>"
+                                    class="btn btn-primary flex-fill"
+                                >
+                                    View
+                                </a>
+
+                                <% if (curr && user._id.toString() === curr._id.toString()) { %>
+
+                                    <a
+                                        href="/blog/edit-Blog/<%= blog._id %>"
+                                        class="btn btn-warning flex-fill"
+                                    >
+                                        Edit
+                                    </a>
+                                    <a
+                                        href="/blog/delete/<%= blog._id %>"
+                                        class="btn btn-danger flex-fill"
+                                    >
+                                        delete
+                                    </a>
+
+                                <% } %>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            <% }) %>
+
+        </div>
+
+    </div>
+
+    <%- include('partials/scripts.ejs') %>
+
+</body>
+</html>

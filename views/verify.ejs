@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs') %>
+    <title>Verify OTP</title>
+</head>
+<body>
+
+    <%- include('partials/nav.ejs') %>
+
+    <div class="container mt-5">
+
+        <div class="card mx-auto shadow"
+             style="max-width:500px;">
+
+            <div class="card-body">
+
+                <h3 class="mb-3">
+                    Verify Email
+                </h3>
+
+                <p class="text-muted">
+                    OTP sent to <%= email %>
+                </p>
+
+                <form action="/verify" method="POST">
+
+                    <input
+                        type="hidden"
+                        name="email"
+                        value="<%= email %>"
+                    >
+
+                    <div class="mb-3">
+
+                        <input
+                            type="text"
+                            name="otp"
+                            class="form-control"
+                            placeholder="Enter OTP"
+                            required
+                        >
+
+                    </div>
+                    <% if (verified==="OTP invalid"||verified==="OTP expired"||verified==="Verification request not found") { %>
+      <div style="color: red;font-weight: bold;">**<%= verified %>**</div>
+  <% } %>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Verify
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <%- include('partials/scripts.ejs') %>
+
+</body>
+</html>

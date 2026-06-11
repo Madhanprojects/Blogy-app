@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs') %>
+    <title>SIGNUP</title>
+
+</head>
+<body>
+    
+    <%- include('partials/nav.ejs') %>
+    <div class="container mt-4" >
+    <form action="signup" method="post">
+  <div class="mb-3">
+    <label for="fullName" class="form-label">Full Name</label>
+    <input type="text" class="form-control" id="fullName" name="fullName">
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email address</label>
+    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
+    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input type="password" class="form-control" id="password" name="password">
+  </div>
+  <% if (Tried) { %>
+      <div style="color: red;font-weight: bold;">**This email is already registered**</div>
+  <% } %>
+  
+   <% if (!Strongpass) { %>
+      <div style="color: red;font-weight: bold;">**enter a Strong password that should contain Minimum 8 characters At least 1 uppercase,1 lowercase,1 number,1 special character**</div>
+  <% } %>
+  
+  <div
+    class="cf-turnstile"
+    data-sitekey="0x4AAAAAADirirj2Jg32vlH3">
+    </div>
+  <div class="d-flex align-items-center gap-3">
+    
+    <button type="submit" class="btn btn-primary">
+        Submit
+    </button>
+
+    <span>
+        Already registered?
+        <a href="/login">Login</a>
+    </span>
+
+  </div>
+</form>
+</div>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer>
+    </script>
+    <%- include('partials/scripts.ejs') %>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs') %>
+    <title>blogy</title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+    
+  <div class="container mt-4">
+    <form action="/blog/add-blog" method="POST" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="title" class="form-label">BLOG TITLE:</label>
+    <input type="text" class="form-control" id="title" name="title">
+  </div>
+
+  <div class="mb-3">
+    <label for="coverImage" class="form-label">COVER IMAGE</label>
+    <input type="file" class="form-control" id="coverImage" name="coverImage">
+  </div>
+  <div class="ml-3" style="color: red;">*upload only jpg files*</div>
+
+  <div class="mb-3">
+    <label for="body" class="form-label">BODY</label>
+    <input type="text" class="form-control" id="body" name="body">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+    <%- include('partials/scripts.ejs') %>
+  </div>
+</body>
+</html>

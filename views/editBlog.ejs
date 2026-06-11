@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs') %>
+    <title>Edit Blog</title>
+</head>
+<body class="bg-light">
+
+    <%- include('partials/nav.ejs') %>
+
+    <div class="container mt-5">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+
+                <div class="card shadow border-0 rounded-4">
+
+                    <div class="card-body p-5">
+
+                        <h2 class="mb-4 text-center">
+                            Edit Blog
+                        </h2>
+
+                        <form
+                            action="/blog/edit-Blog/<%= blog._id %>"
+                            method="POST"
+                            enctype="multipart/form-data"
+                        >
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Title
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="title"
+                                    class="form-control"
+                                    value="<%= blog.title %>"
+                                    required
+                                >
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Current Cover
+                                </label>
+
+                                <img
+                                    src="<%= blog.coverImage %>"
+                                    class="img-fluid rounded mb-3"
+                                    style="max-height:250px;object-fit:cover;"
+                                >
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    New Cover Image
+                                </label>
+
+                                <input
+                                    type="file"
+                                    name="coverImage"
+                                    class="form-control"
+                                >
+                            </div>
+                            <div class="ml-3" style="color: red;">*upload only jpg files*</div>
+
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    Content
+                                </label>
+
+                                <textarea
+                                    name="body"
+                                    rows="10"
+                                    class="form-control"
+                                    required
+                                ><%= blog.body %></textarea>
+                            </div>
+
+                            <div class="d-grid">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-lg"
+                                >
+                                    Update Blog
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <%- include('partials/scripts.ejs') %>
+
+</body>
+</html>

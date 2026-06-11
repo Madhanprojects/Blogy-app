@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs') %>
+    <title>Blogy</title>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+
+    <div class="container d-flex justify-content-center mt-5">
+
+        <div class="card shadow border-0" style="width: 28rem; min-height: 460px;">
+
+            <div class="card-body text-center d-flex flex-column">
+
+                <!-- Profile Picture -->
+                <img
+                    src="<%= curr.profileUrl %>"
+                    alt="Profile Picture"
+                    class="rounded-circle border shadow-sm mb-3 mx-auto"
+                    style="width: 130px; height: 130px; object-fit: cover;"
+                >
+                <!-- User Name -->
+                <h3 class="fw-bold">
+                    <%= curr.fullName %>
+                </h3>
+                <% if (user && curr._id.toString() === user._id.toString()) { %>
+
+                        <p class="text-muted">
+                            <%= curr.email %>
+                        </p>
+
+                    <% } else { %>
+
+                        <%
+                            const [name, domain] = curr.email.split("@");
+                        %>
+
+                        <p class="text-muted">
+                            <%= name.substring(0, 2) %>******@<%= domain %>
+                        </p>
+
+                    <% } %>
+                
+                <% if (user && curr._id.toString() === user._id.toString()) { %>
+
+                       <a href="/user/edit/my-profile/" class="btn btn-secondary" >edit profile</a>
+
+                    <% } %>
+                
+                <hr>
+
+                <!-- User Details -->
+                <div class="text-start">
+
+                    <p>
+                        <strong>Joined:</strong>
+                        <%= curr.createdAt.toDateString() %>
+                    </p>
+
+                    <p>
+                        <strong>Total Blogs:</strong>
+                        <%= allBlogs %>
+                    </p>
+
+                    <p>
+                        <strong>Total Interactions:</strong>
+                        <%= allComments %>
+                    </p>
+
+                </div>
+
+                <!-- Push Button to Bottom -->
+                <div class="mt-auto text-center">
+                    <a
+    href="/blog/view-user-blogs/<%= curr._id %>"
+    class="btn btn-info"
+    style="width:150px;"
+>
+    Blogs
+</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <%- include('partials/scripts.ejs') %>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs') %>
+</head>
+<body>
+    <%- include('partials/nav.ejs') %>
+    <div class="container mt-4">
+
+    <h3 class="mb-4">Comments</h3>
+    <% if (!comments || comments.length === 0) { %>
+
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <strong class="fs-3 text-secondary">
+                No Comments Yet
+            </strong>
+        </div>
+
+    <% } %>
+    <% comments.forEach(comment => { %>
+
+        <div class="card mb-3 shadow-sm border-0">
+
+            <div class="card-body">
+
+                <div class="d-flex align-items-center mb-2">
+                    <a
+    href="/user/profile/<%= comment.createdBy._id %>"
+    class="text-decoration-none d-inline-flex align-items-center gap-2"
+>
+                    <img
+                        src="<%= comment.createdBy.profileUrl %>"
+                        class="rounded-circle me-2"
+                        style="width:40px; height:40px; object-fit:cover;"
+                        alt=""
+                    >
+
+                    <strong>
+                        <%= comment.createdBy.fullName %>
+                    </strong>
+                    </a>
+
+                </div>
+
+                <p class="mb-0">
+                    <%= comment.content %>
+                </p>
+
+            </div>
+
+        </div>
+
+    <% }) %>
+<div
+    class="position-fixed bottom-0 start-50 translate-middle-x bg-white shadow p-3"
+    style="width: 80%; max-width: 900px; z-index: 1000;"
+>
+    <form action="/blog/comment/<%= blog._id %>" method="POST">
+
+        <div class="input-group">
+
+            <input
+                type="text"
+                name="content"
+                class="form-control"
+                placeholder="Write a comment..."
+                required
+            >
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Comment
+            </button>
+
+        </div>
+
+    </form>
+</div>
+    <%- include('partials/scripts.ejs') %>
+</body>
+</html>
