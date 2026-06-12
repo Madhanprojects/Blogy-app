@@ -1,4 +1,3 @@
-const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 
 const OAuth2 = google.auth.OAuth2;
@@ -14,33 +13,32 @@ oauth2Client.setCredentials({
 });
 
 async function sendOTP(email, otp) {
-    try {
-        const accessToken = await oauth2Client.getAccessToken();
-        console.log("ACCESS TOKEN RECEIVED:", !!accessToken.token);
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                type: "OAuth2",
-                user: process.env.EMAIL,
-                clientId: process.env.CLIENT_ID,
-                clientSecret: process.env.CLIENT_SECRET,
-                refreshToken: process.env.REFRESH_TOKEN,
-                accessToken: accessToken.token
-            }
-        });
+    const gmail = google.gmail({
+        version: "v1",
+        auth: oauth2Client
+    });
 
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL,
-            to: email,
-            subject: "Blogy Email Verification",
-            text: `Your OTP is ${otp}`
-        });
+    const message = [
+        `To: ${email}`,
+        `Subject: Blogy Email Verification`,
+        "",
+        `Your OTP is ${otp}`
+    ].join("\n");
 
-        console.log("MAIL SENT:", info.messageId);
-    } catch (err) {
-        console.error("MAIL ERROR:", err);
-        throw err;
-    }
+    const encodedMessage = Buffer.from(message)
+        .toString("base64")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, "");
+
+    const res = await gmail.users.messages.send({
+        userId: "me",
+        requestBody: {
+            raw: encodedMessage
+        }
+    });
+
+    console.log("MAIL SENT:", res.data.id);
 }
 
 module.exports = { sendOTP };
