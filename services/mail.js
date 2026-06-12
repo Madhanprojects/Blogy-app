@@ -1,33 +1,46 @@
 const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    family: 4,
-    auth: {
-        user: "userv9796@gmail.com",
-        pass: process.env.pass
-    }
-});
+const OAuth2 = google.auth.OAuth2;
 
-transporter.verify((err, success) => {
-    if (err) {
-        console.error("VERIFY ERROR:", err);
-    } else {
-        console.log("SMTP READY");
-    }
+const oauth2Client = new OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    "https://developers.google.com/oauthplayground"
+);
+
+oauth2Client.setCredentials({
+    refresh_token: process.env.REFRESH_TOKEN
 });
 
 async function sendOTP(email, otp) {
-    await transporter.sendMail({
-        from: "userv9796@gmail.com",
-        to: email,
-        subject: "Blogy Email Verification",
-        text: `Your OTP is ${otp}`
-    });
+    try {
+        const accessToken = await oauth2Client.getAccessToken();
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                type: "OAuth2",
+                user: process.env.EMAIL,
+                clientId: process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                refreshToken: process.env.REFRESH_TOKEN,
+                accessToken: accessToken.token
+            }
+        });
+
+        const info = await transporter.sendMail({
+            from: process.env.EMAIL,
+            to: email,
+            subject: "Blogy Email Verification",
+            text: `Your OTP is ${otp}`
+        });
+
+        console.log("MAIL SENT:", info.messageId);
+    } catch (err) {
+        console.error("MAIL ERROR:", err);
+        throw err;
+    }
 }
 
-module.exports = {
-    sendOTP
-};
+module.exports = { sendOTP };
