@@ -1,3 +1,4 @@
+🚀 Live Demo: https://blogy-app.onrender.com
 # Blogy - Blogging Platform with Secure Email Verification
 
 ## Overview
